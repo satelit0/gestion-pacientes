@@ -1,0 +1,415 @@
+object FBuscaNotaEnfermedadME: TFBuscaNotaEnfermedadME
+  Left = 379
+  Top = 232
+  AutoScroll = False
+  BorderIcons = []
+  Caption = 'Buscar Enfermedades Vinculadas a Pacientes'
+  ClientHeight = 221
+  ClientWidth = 498
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poDesktopCenter
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object bsSkinBevel1: TbsSkinBevel
+    Left = 8
+    Top = 144
+    Width = 481
+    Height = 73
+    Shape = bsFrame
+    SkinData = FPrincipal.BSDataSkin_FPrincipal
+    SkinDataName = 'bevel'
+    DividerMode = False
+  end
+  object LB_1: TbsSkinStdLabel
+    Left = 19
+    Top = 149
+    Width = 102
+    Height = 13
+    EllipsType = bsetNone
+    UseSkinFont = True
+    UseSkinColor = True
+    DefaultFont.Charset = DEFAULT_CHARSET
+    DefaultFont.Color = clWindowText
+    DefaultFont.Height = -11
+    DefaultFont.Name = 'Tahoma'
+    DefaultFont.Style = [fsBold]
+    SkinData = FPrincipal.BSDataSkin_FPrincipal
+    SkinDataName = 'stdlabel'
+    Caption = 'Ingrese una fecha'
+  end
+  object LB_2: TbsSkinStdLabel
+    Left = 144
+    Top = 149
+    Width = 78
+    Height = 13
+    EllipsType = bsetNone
+    UseSkinFont = True
+    UseSkinColor = True
+    DefaultFont.Charset = DEFAULT_CHARSET
+    DefaultFont.Color = clWindowText
+    DefaultFont.Height = -11
+    DefaultFont.Name = 'Tahoma'
+    DefaultFont.Style = [fsBold]
+    SkinDataName = 'stdlabel'
+    Caption = 'C'#243'digo CIE-10'
+  end
+  object DBGRID_BuscanotaEnfermedadME: TbsSkinDBGrid
+    Left = 0
+    Top = 0
+    Width = 498
+    Height = 137
+    HintImageIndex = 0
+    TabOrder = 0
+    SkinData = FPrincipal.BSDataSkin_FPrincipal
+    SkinDataName = 'grid'
+    Transparent = False
+    WallpaperStretch = False
+    UseSkinFont = True
+    UseSkinCellHeight = True
+    GridLineColor = clWindowText
+    DefaultCellHeight = 20
+    DrawGraphicFields = False
+    UseColumnsFont = False
+    DefaultRowHeight = 17
+    MouseWheelSupport = False
+    SaveMultiSelection = False
+    PickListBoxSkinDataName = 'listbox'
+    PickListBoxCaptionMode = False
+    Align = alTop
+    DataSource = DS_BuscaNotaEnfermedadME
+    Options = [dgTitles, dgIndicator, dgColLines, dgRowLines, dgRowSelect, dgAlwaysShowSelection, dgCancelOnExit]
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'MS Sans Serif'
+    TitleFont.Style = []
+    OnDblClick = DBGRID_BuscanotaEnfermedadMEDblClick
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'CODIGO_ENFERMEDAD'
+        Title.Alignment = taCenter
+        Title.Caption = 'C'#243'digo CIE-10'
+        Title.Font.Charset = DEFAULT_CHARSET
+        Title.Font.Color = clWindowText
+        Title.Font.Height = -11
+        Title.Font.Name = 'Tahoma'
+        Title.Font.Style = []
+        Width = 88
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'NOTA_ENFERMEDAD'
+        Title.Alignment = taCenter
+        Title.Caption = 'Nota de Enfermedad'
+        Title.Font.Charset = DEFAULT_CHARSET
+        Title.Font.Color = clWindowText
+        Title.Font.Height = -11
+        Title.Font.Name = 'Tahoma'
+        Title.Font.Style = []
+        Visible = True
+      end>
+  end
+  object EditDate_BuscaNotaEnfermedadME: TbsSkinDateEdit
+    Left = 18
+    Top = 165
+    Width = 120
+    Height = 18
+    EditMask = '!99/99/0000;1; '
+    Text = '  /  /    '
+    AlphaBlend = False
+    AlphaBlendAnimation = False
+    AlphaBlendValue = 0
+    UseSkinFont = True
+    TodayDefault = False
+    CalendarWidth = 200
+    CalendarHeight = 150
+    CalendarFont.Charset = DEFAULT_CHARSET
+    CalendarFont.Color = clWindowText
+    CalendarFont.Height = 14
+    CalendarFont.Name = 'Arial'
+    CalendarFont.Style = []
+    CalendarBoldDays = False
+    CalendarUseSkinFont = True
+    CalendarSkinDataName = 'panel'
+    FirstDayOfWeek = Sun
+    DefaultFont.Charset = DEFAULT_CHARSET
+    DefaultFont.Color = clBlack
+    DefaultFont.Height = 14
+    DefaultFont.Name = 'Arial'
+    DefaultFont.Style = []
+    DefaultWidth = 0
+    DefaultHeight = 0
+    ButtonMode = True
+    SkinData = FPrincipal.BSDataSkin_FPrincipal
+    SkinDataName = 'buttonedit'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = 14
+    Font.Name = 'Arial'
+    Font.Style = []
+    MaxLength = 10
+    ParentFont = False
+    TabOrder = 1
+    LeftImageIndex = -1
+    LeftImageHotIndex = -1
+    LeftImageDownIndex = -1
+    RightImageIndex = -1
+    RightImageHotIndex = -1
+    RightImageDownIndex = -1
+    OnChange = EditDate_BuscaNotaEnfermedadMEChange
+    OnClick = EditDate_BuscaNotaEnfermedadMEClick
+    OnKeyPress = EditDate_BuscaNotaEnfermedadMEKeyPress
+  end
+  object BT_BuscaNotaEnfermedadME: TbsSkinButton
+    Left = 226
+    Top = 163
+    Width = 75
+    Height = 20
+    HintImageIndex = 0
+    TabOrder = 2
+    SkinData = FPrincipal.BSDataSkin_FPrincipal
+    SkinDataName = 'button'
+    DefaultFont.Charset = DEFAULT_CHARSET
+    DefaultFont.Color = clWindowText
+    DefaultFont.Height = 14
+    DefaultFont.Name = 'Arial'
+    DefaultFont.Style = []
+    DefaultWidth = 0
+    DefaultHeight = 0
+    UseSkinFont = True
+    ImageIndex = -1
+    AlwaysShowLayeredFrame = False
+    UseSkinSize = True
+    UseSkinFontColor = True
+    RepeatMode = False
+    RepeatInterval = 100
+    AllowAllUp = False
+    TabStop = True
+    CanFocused = True
+    Down = False
+    GroupIndex = 0
+    Caption = 'Buscar'
+    NumGlyphs = 1
+    Spacing = 1
+    OnClick = BT_BuscaNotaEnfermedadMEClick
+  end
+  object BT_Selecciona: TbsSkinButton
+    Left = 19
+    Top = 189
+    Width = 203
+    Height = 20
+    HintImageIndex = 0
+    TabOrder = 3
+    SkinData = FPrincipal.BSDataSkin_FPrincipal
+    SkinDataName = 'button'
+    DefaultFont.Charset = DEFAULT_CHARSET
+    DefaultFont.Color = clWindowText
+    DefaultFont.Height = 14
+    DefaultFont.Name = 'Arial'
+    DefaultFont.Style = []
+    DefaultWidth = 0
+    DefaultHeight = 0
+    UseSkinFont = True
+    ImageIndex = -1
+    AlwaysShowLayeredFrame = False
+    UseSkinSize = True
+    UseSkinFontColor = True
+    RepeatMode = False
+    RepeatInterval = 100
+    AllowAllUp = False
+    TabStop = True
+    CanFocused = True
+    Down = False
+    GroupIndex = 0
+    Caption = 'Seleccionar'
+    NumGlyphs = 1
+    Spacing = 1
+    Enabled = False
+    OnClick = BT_SeleccionaClick
+  end
+  object BT_Salir: TbsSkinButton
+    Left = 227
+    Top = 189
+    Width = 75
+    Height = 20
+    HintImageIndex = 0
+    TabOrder = 4
+    SkinData = FPrincipal.BSDataSkin_FPrincipal
+    SkinDataName = 'button'
+    DefaultFont.Charset = DEFAULT_CHARSET
+    DefaultFont.Color = clWindowText
+    DefaultFont.Height = 14
+    DefaultFont.Name = 'Arial'
+    DefaultFont.Style = []
+    DefaultWidth = 0
+    DefaultHeight = 0
+    UseSkinFont = True
+    ImageIndex = -1
+    AlwaysShowLayeredFrame = False
+    UseSkinSize = True
+    UseSkinFontColor = True
+    RepeatMode = False
+    RepeatInterval = 100
+    AllowAllUp = False
+    TabStop = True
+    CanFocused = True
+    Down = False
+    GroupIndex = 0
+    Caption = 'Salir'
+    NumGlyphs = 1
+    Spacing = 1
+    OnClick = BT_SalirClick
+  end
+  object E_BuscaXCodigoCIE10: TbsSkinEdit
+    Left = 142
+    Top = 163
+    Width = 80
+    Height = 18
+    DefaultColor = clWindow
+    DefaultFont.Charset = DEFAULT_CHARSET
+    DefaultFont.Color = clBlack
+    DefaultFont.Height = 14
+    DefaultFont.Name = 'Arial'
+    DefaultFont.Style = []
+    UseSkinFont = True
+    DefaultWidth = 0
+    DefaultHeight = 0
+    ButtonMode = False
+    SkinData = FPrincipal.BSDataSkin_FPrincipal
+    SkinDataName = 'edit'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = 14
+    Font.Name = 'Arial'
+    Font.Style = []
+    CharCase = ecUpperCase
+    ParentFont = False
+    TabOrder = 5
+    LeftImageIndex = -1
+    LeftImageHotIndex = -1
+    LeftImageDownIndex = -1
+    RightImageIndex = -1
+    RightImageHotIndex = -1
+    RightImageDownIndex = -1
+    OnClick = E_BuscaXCodigoCIE10Click
+    OnKeyPress = E_BuscaXCodigoCIE10KeyPress
+  end
+  object BSSF_BuscaNotaEnfermedadME: TbsBusinessSkinForm
+    QuickButtons = <>
+    QuickButtonsShowHint = False
+    ClientInActiveEffect = False
+    ClientInActiveEffectType = bsieSemiTransparent
+    DisableSystemMenu = False
+    AlwaysResize = False
+    PositionInMonitor = bspDefault
+    UseFormCursorInNCArea = False
+    MaxMenuItemsInWindow = 0
+    ClientWidth = 0
+    ClientHeight = 0
+    HideCaptionButtons = False
+    AlwaysShowInTray = False
+    LogoBitMapTransparent = False
+    AlwaysMinimizeToTray = False
+    UseSkinFontInMenu = True
+    ShowIcon = False
+    MaximizeOnFullScreen = False
+    AlphaBlend = False
+    AlphaBlendAnimation = False
+    AlphaBlendValue = 200
+    ShowObjectHint = False
+    MenusAlphaBlend = False
+    MenusAlphaBlendAnimation = False
+    MenusAlphaBlendValue = 200
+    DefCaptionFont.Charset = DEFAULT_CHARSET
+    DefCaptionFont.Color = clBtnText
+    DefCaptionFont.Height = 14
+    DefCaptionFont.Name = 'Arial'
+    DefCaptionFont.Style = [fsBold]
+    DefInActiveCaptionFont.Charset = DEFAULT_CHARSET
+    DefInActiveCaptionFont.Color = clBtnShadow
+    DefInActiveCaptionFont.Height = 14
+    DefInActiveCaptionFont.Name = 'Arial'
+    DefInActiveCaptionFont.Style = [fsBold]
+    DefMenuItemHeight = 20
+    DefMenuItemFont.Charset = DEFAULT_CHARSET
+    DefMenuItemFont.Color = clWindowText
+    DefMenuItemFont.Height = 14
+    DefMenuItemFont.Name = 'Arial'
+    DefMenuItemFont.Style = []
+    UseDefaultSysMenu = True
+    SkinData = FPrincipal.BSDataSkin_FPrincipal
+    MinHeight = 259
+    MinWidth = 514
+    MaxHeight = 259
+    MaxWidth = 514
+    Magnetic = False
+    MagneticSize = 5
+    BorderIcons = []
+    Left = 128
+    Top = 40
+  end
+  object CD_BuscaNotaEnfermedadME: TClientDataSet
+    Aggregates = <>
+    Params = <
+      item
+        DataType = ftString
+        Name = 'records'
+        ParamType = ptInputOutput
+        Value = #39#39
+      end
+      item
+        DataType = ftString
+        Name = 'idMed'
+        ParamType = ptInputOutput
+        Value = #39#39
+      end
+      item
+        DataType = ftDateTime
+        Name = 'fecha'
+        ParamType = ptInputOutput
+      end
+      item
+        DataType = ftString
+        Name = 'codigoCIE10'
+        ParamType = ptInputOutput
+        Value = #39#39
+      end>
+    ProviderName = 'DSP_BuscaNotaEnfermedadME'
+    RemoteServer = FPrincipal.SKConexion
+    Left = 160
+    Top = 40
+    object CD_BuscaNotaEnfermedadMENOTA_ENFERMEDAD: TStringField
+      FieldName = 'NOTA_ENFERMEDAD'
+      Size = 255
+    end
+    object CD_BuscaNotaEnfermedadMEDESCRIPCION_ENFERMEDAD: TStringField
+      FieldName = 'DESCRIPCION_ENFERMEDAD'
+      Size = 255
+    end
+    object CD_BuscaNotaEnfermedadMECODIGO_ENFERMEDAD: TStringField
+      FieldName = 'CODIGO_ENFERMEDAD'
+      Size = 10
+    end
+    object CD_BuscaNotaEnfermedadMEFECHAR_NOTAENF_CREADO: TDateTimeField
+      FieldName = 'FECHAR_NOTAENF_CREADO'
+    end
+    object CD_BuscaNotaEnfermedadMEIDNOTAENFERMEDAD: TAutoIncField
+      FieldName = 'IDNOTAENFERMEDAD'
+      ReadOnly = True
+    end
+  end
+  object DS_BuscaNotaEnfermedadME: TDataSource
+    DataSet = CD_BuscaNotaEnfermedadME
+    Left = 192
+    Top = 40
+  end
+end

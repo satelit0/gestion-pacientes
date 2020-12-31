@@ -1,0 +1,245 @@
+unit UEnfermedades;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, DB, bsSkinCtrls, bsSkinGrids, bsDBGrids, bsdbctrls, DBClient,
+  StdCtrls, Mask, bsSkinBoxCtrls, BusinessSkinForm, UNotaDetalleEnfermedad,
+  JvComponentBase, JvValidators, JvErrorIndicator, ImgList, bsPngImageList,
+  bsMessages;
+
+type
+  TFEnfermedades = class(TForm)
+    STRINGRID_Enfermedades: TbsSkinDBGrid;
+    DS_Enfermedades: TDataSource;
+    bsSkinDBNavigator1: TbsSkinDBNavigator;
+    CD_BuscaEnfermedades: TClientDataSet;
+    BSSF_Enfermedades: TbsBusinessSkinForm;
+    GC_1: TbsSkinGroupBox;
+    BT_SeleccionarEnfermedad: TbsSkinButton;
+    E_BuscarEnfermedad: TbsSkinEdit;
+    bsSkinScrollBar1: TbsSkinScrollBar;
+    DBMemo_Enfermedades: TbsSkinDBMemo;
+    LB_1: TbsSkinStdLabel;
+    DS_EnfermedadesNotas: TDataSource;
+    BT_Retornar: TbsSkinButton;
+    CD_BuscaNotaEnfermedad: TClientDataSet;
+    BT_BuscaEnfermedad: TbsSkinButton;
+    BBT_OtrasNotas: TbsSkinSpeedButton;
+    IMG_Enfermedad: TbsPngImageList;
+    Mensaje_Enfermedad: TbsSkinMessage;
+    Memo_resumenNotaEnfermedad: TbsSkinMemo;
+    CD_BuscaEnfermedadesIDENFERMEDAD: TAutoIncField;
+    CD_BuscaEnfermedadesCODIGO_ENFERMEDAD: TStringField;
+    CD_BuscaEnfermedadesDESCRIPCION_ENFERMEDAD: TStringField;
+    procedure STRINGRID_EnfermedadesDblClick(Sender: TObject);
+    procedure BT_RetornarClick(Sender: TObject);
+    procedure BuscaNotaEnfermedad_Paciente(idEnf, recordsP:Integer;cedMed:string);
+    procedure STRINGRID_EnfermedadesKeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure STRINGRID_EnfermedadesCellClick(Column: TbsColumn);
+    procedure bsSkinDBNavigator1Click(Sender: TObject;
+      Button: TbsNavigateBtn);
+    procedure E_BuscarEnfermedadKeyPress(Sender: TObject; var Key: Char);
+    procedure BT_SeleccionarEnfermedadClick(Sender: TObject);
+    procedure BT_BuscaEnfermedadClick(Sender: TObject);
+    procedure BBT_OtrasNotasClick(Sender: TObject);
+    procedure MuestraOcultaLiniasGridEnfermedades(Opcion:Integer);
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    procedure BuscaEnfermedad(ValorBusqueda:string);
+  end;
+
+var
+  FEnfermedades: TFEnfermedades;
+  IdEnfermdadOtrosMedicos:Integer;
+  EnfermedadesEstaActivo:Boolean; //determinar cuando el form esta en uso.
+implementation
+
+uses UPrincipal, UPacienteCM, Math;
+
+{$R *.dfm}
+
+procedure TFEnfermedades.STRINGRID_EnfermedadesDblClick(Sender: TObject);
+begin
+  if BT_SeleccionarEnfermedad.Enabled = True then
+    begin
+      _FNotaEnfermedad:=TFNotaEnfermedad.Create(Self);
+      with _FNotaEnfermedad do
+        begin
+          DS_CreaNotasEnfermedades.DataSet:=CD_BuscaEnfermedades;
+          M_MostrarDescripcionEnfermedad.Text:=CD_BuscaEnfermedadesDESCRIPCION_ENFERMEDAD.AsString;
+          E_MostrarCodigoEnfermedad.Text:=CD_BuscaEnfermedadesCODIGO_ENFERMEDAD.AsString; 
+          M_NotaEnfermedad.Enabled:=True;
+          BT_GuardarNotaEnfermedad.Enabled:=True;
+          M_NotaEnfermedad.Lines.Clear;
+          LB_MostrarFechaCreacionNota.Visible:=False;
+          ShowModal;
+          Free;
+        end;
+    end;
+end;
+
+procedure TFEnfermedades.BT_RetornarClick(Sender: TObject);
+begin
+  self.Close;
+end;
+
+procedure TFEnfermedades.BuscaNotaEnfermedad_Paciente(idEnf,
+  recordsP: Integer; cedMed: string);
+begin
+  if CD_BuscaEnfermedades.RecordCount > 0 then
+    begin
+      CD_BuscaNotaEnfermedad.Close;
+      CD_BuscaNotaEnfermedad.Params[0].Value:=idEnf;
+      CD_BuscaNotaEnfermedad.Params[1].Value:=recordsP;
+      CD_BuscaNotaEnfermedad.Params[2].AsString:=cedMed;
+      CD_BuscaNotaEnfermedad.Open;
+
+     { CD_BuscaNotasMedicosOtros.Close;
+      CD_BuscaNotasMedicosOtros.Params[0].Value:=CD_BuscaEnfermedadesIDENFERMEDAD.Value;
+      CD_BuscaNotasMedicosOtros.Params[1].Value:=recordsPaciente;
+      CD_BuscaNotasMedicosOtros.Params[2].Value:=CEDULA_USUARIO_LOGUEADO;
+      CD_BuscaNotasMedicosOtros.Open;
+      if CD_BuscaNotasMedicosOtros.RecordCount > 0 then
+        begin
+          BBT_OtrasNotas.Visible:=True;
+          BBT_OtrasNotas.ImageIndex:=0;
+        end
+      else
+        begin
+          BBT_OtrasNotas.ImageIndex:=-1;
+          BBT_OtrasNotas.Visible:=False;
+        end; }
+    end;
+
+end;
+
+procedure TFEnfermedades.STRINGRID_EnfermedadesKeyUp(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+  if Key = VK_UP then
+  begin
+    BuscaNotaEnfermedad_Paciente(CD_BuscaEnfermedadesIDENFERMEDAD.AsInteger,
+                                 recordsPaciente,CEDULA_USUARIO_LOGUEADO);
+  end;
+if Key = VK_DOWN then
+  begin
+    BuscaNotaEnfermedad_Paciente(CD_BuscaEnfermedadesIDENFERMEDAD.AsInteger,
+                                 recordsPaciente,CEDULA_USUARIO_LOGUEADO);
+  end;
+  if Key = VK_LEFT then
+  begin
+    BuscaNotaEnfermedad_Paciente(CD_BuscaEnfermedadesIDENFERMEDAD.AsInteger,
+                                 recordsPaciente,CEDULA_USUARIO_LOGUEADO);
+  end;
+if Key = VK_RIGHT then
+  begin
+    BuscaNotaEnfermedad_Paciente(CD_BuscaEnfermedadesIDENFERMEDAD.AsInteger,
+                                 recordsPaciente,CEDULA_USUARIO_LOGUEADO);
+  end;
+end;
+
+procedure TFEnfermedades.STRINGRID_EnfermedadesCellClick(
+  Column: TbsColumn);
+begin
+  if BT_SeleccionarEnfermedad.Enabled = True  then
+    begin
+      BuscaNotaEnfermedad_Paciente(CD_BuscaEnfermedadesIDENFERMEDAD.AsInteger,
+                                 recordsPaciente,CEDULA_USUARIO_LOGUEADO);
+    end;
+end;
+
+procedure TFEnfermedades.bsSkinDBNavigator1Click(Sender: TObject;
+  Button: TbsNavigateBtn);
+begin
+  BuscaNotaEnfermedad_Paciente(CD_BuscaEnfermedadesIDENFERMEDAD.AsInteger,
+                                 recordsPaciente,CEDULA_USUARIO_LOGUEADO);
+end;
+
+procedure TFEnfermedades.E_BuscarEnfermedadKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  if Key = #13 then
+    begin
+      BT_BuscaEnfermedadClick(Self);
+    end;
+end;
+
+procedure TFEnfermedades.BT_SeleccionarEnfermedadClick(Sender: TObject);
+begin
+   STRINGRID_EnfermedadesDblClick(Self);
+end;
+
+procedure TFEnfermedades.BT_BuscaEnfermedadClick(Sender: TObject);
+
+begin
+  if Trim(E_BuscarEnfermedad.Text) <> '' then
+    begin
+      BuscaEnfermedad(E_BuscarEnfermedad.Text);
+      if CD_BuscaEnfermedades.RecordCount > 0 then
+        begin
+          DBMemo_Enfermedades.Lines.Clear;
+          BT_SeleccionarEnfermedad.Enabled:=True;  
+        end
+      else
+        begin
+          BT_SeleccionarEnfermedad.Enabled:=False;
+          BBT_OtrasNotas.Enabled := False;
+        end;
+      //BuscaNotaEnfermedad_Paciente(CD_BuscaEnfermedadesIDENFERMEDAD.AsInteger,
+      //                             recordsPaciente,CEDULA_USUARIO_LOGUEADO);
+    end;
+end;
+
+procedure TFEnfermedades.BBT_OtrasNotasClick(Sender: TObject);
+
+begin
+ {CD_BuscaNotasMedicosOtros.Close;
+  CD_BuscaNotasMedicosOtros.Params[0].Value:=CD_BuscaEnfermedadesIDENFERMEDAD.Value;
+  CD_BuscaNotasMedicosOtros.Params[1].Value:=recordsPaciente;
+  CD_BuscaNotasMedicosOtros.Params[2].Value:=CEDULA_USUARIO_LOGUEADO;
+  CD_BuscaNotasMedicosOtros.Open;
+  CD_BuscaNotasMedicosOtros.First;
+  Memo_resumenNotaEnfermedad.Clear;
+  while not CD_BuscaNotasMedicosOtros.Eof do
+    begin
+      Memo_resumenNotaEnfermedad.Lines.Add('Dr(a). '+CD_BuscaNotasMedicosOtrosnombreUsuario.AsString+'  '+CD_BuscaNotasMedicosOtrosNOTA_ENFERMEDAD.AsString);
+      CD_BuscaNotasMedicosOtros.Next;
+    end;
+  Mensaje_Enfermedad.CustomMessageDlg(Memo_resumenNotaEnfermedad.Text,Titulo,IMG_Enfermedad,0,[mbOK],0);}
+
+end;
+procedure TFEnfermedades.MuestraOcultaLiniasGridEnfermedades(Opcion:Integer);
+begin
+ { if (CD_BuscaEnfermedades.RecordCount > 0) then
+    begin
+      STRINGRID_Enfermedades.Canvas.  }
+
+end;
+
+procedure TFEnfermedades.FormCreate(Sender: TObject);
+begin
+  EnfermedadesEstaActivo:=True;
+end;
+
+procedure TFEnfermedades.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  EnfermedadesEstaActivo:=False;
+end;
+
+procedure TFEnfermedades.BuscaEnfermedad(ValorBusqueda: string);
+begin
+  CD_BuscaEnfermedades.Close;
+  CD_BuscaEnfermedades.Params[0].AsString:='%'+ValorBusqueda+'%';
+  CD_BuscaEnfermedades.Params[1].AsString:='%'+ValorBusqueda+'%';
+  CD_BuscaEnfermedades.open;
+end;
+
+end.
